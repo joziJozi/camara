@@ -5,14 +5,19 @@ import { Image, View } from 'react-native'
 
 
 
-const Index = () => {
+const Index = ({navigation}) => {
 
-    const [deputados, setDeputados] = useState([])
+   // const [deputados, setDeputados] = useState([])
 
+    const [partido, setPartido] = useState([])
 
     useEffect(() => {
-        apiDeputados.get('/deputados/').then(resultado => {
-            setDeputados(resultado.data.dados)
+        // apiDeputados.get('/deputados/').then(resultado => {
+        //     setDeputados(resultado.data.dados)
+        // })
+            apiDeputados.get('/partidos/').then(resultado => {
+                setPartido(resultado.data.dados)
+
         })
     }, [])
 
@@ -20,7 +25,7 @@ const Index = () => {
     return (
         <>
          <View style={{ padding: 15 }}>
-            {deputados.map(item => (
+            {partido.map(item => (
                 <>
 
                     <Card mode='outlined' key={item.id} style={{ marginBottom: 15 }}>
@@ -28,17 +33,19 @@ const Index = () => {
                             title={item.nome}
                             left={(props) =>
                                 <Image
-                                    source={{ uri:item.urlFoto }}
+                                    source={{ uri: item.urlLogo}}
                                     style={{ width: 40, height: 40, borderRadius: 40 }}
                                 ></Image>
                             }
-                            right={(props) => <IconButton{...props} icon="chevron-right"   onPress={() => navigation.push('Filmes-Detalhes', {id: item.id})}></IconButton>}
+                            right={(props) => <IconButton{...props} icon="chevron-right"   
+                            onPress={() => navigation.push('Filmes-Detalhes', {id: item.id})}></IconButton>}
                             
                         />
-                        
+                             <Text variant="titleLarge">{item.id}</Text>
                     </Card>
                 </>
             ))}
+           
             </View>
         </>
     )
